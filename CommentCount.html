@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CommentCount</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .avatar {
+      width: 250px;
+      height: 70px;
+      margin: 100px auto  0;
+      text-align: center;
+      position: relative;
+    }
+    
+    textarea {
+      width: 200px;
+      height: 30px;
+      padding: 3px;
+      border-radius: 5px;
+      line-height: 13px;
+      resize: none;
+      font-size: 13px;
+      /* Add transition */
+      transition: all 0.5s;
+    }
+
+    textarea:focus {
+      height: 60px;
+    }
+
+    button {
+      position: absolute;
+      margin-left: 3px;
+      width: 40px;
+      height: 30px;
+      background-color: rgb(0, 153, 255);
+      border-radius: 5px;
+      color: #fff;
+      /* Add transition */
+      transition: all 0.5s;
+    }
+
+    .data-button {
+      height: 60px;
+    }
+
+    .avatar p {
+      opacity: 0;
+      font-size: 12px;
+      color: #a19e9e;
+      padding-left: 160px;
+      margin-top: -6px;
+    }
+
+    .list {
+      width: 200px;
+      height: 100px;
+      margin: -30px auto 0;
+      text-align: center;
+      /* Add transition effect */
+      transition: all 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <div class="avatar">
+    <textarea name="" id="" maxlength="200" placeholder=" Please enter" ></textarea>
+    <button>Post</button>
+    <p><span></span>/200 characters</p>
+  </div>
+
+  <div class="list">
+  </div>
+  <script>
+    // Add a textarea click event, the effect is to click the textarea text box, the button becomes higher
+    const textarea = document.querySelector('textarea')
+    const button = document.querySelector('button')
+    const p = document.querySelector('p')
+    const list = document.querySelector('.list')
+    textarea.addEventListener('focus', function() {
+      button.classList.add('data-button')
+      p.style.opacity = 1
+      list.style.margin= '10px auto 0'
+    })
+    textarea.addEventListener('blur', function() {
+      button.classList.remove('data-button')
+      p.style.opacity = 0
+      list.style.margin= '-30px auto 0'
+    })
+
+    // Requirement: User input text, can calculate the number of words entered by the user
+    // Analysis
+    // 1. Determine the input event input
+    // 2. Continuously get the character length in the text box, textarea.value.length
+    // 3. Put the obtained character length into the span
+    // Check if textarea has input event
+    textarea.addEventListener('input', function() {
+      // Get the character length in the textarea
+      const length = textarea.value.length
+      // Get the span in the p tag
+      const span = p.querySelector('span')
+      // Put the character length into the span
+      span.innerHTML = length
+    })
+
+    // Use the keyup event
+    // If the user presses the Enter key and clicks, post the comment, and clear the value in the textarea
+    // Let the message module display, and render the obtained data into the div
+    button.addEventListener('click', function() {
+      // Get the value in the textarea
+      const value = textarea.value
+      // Create a p tag
+      const p = document.createElement('p')
+      // Put the value in the textarea into the p tag
+      if (textarea.value !== '') {
+        p.innerHTML = value
+        // Put the p tag into the list
+        list.appendChild(p)
+      }
+      // Clear the value in the textarea
+      textarea.value = ''
+    })
+    textarea.addEventListener('keyup', function(e) {
+      // Determine if the user pressed the Enter key
+      if (e.key === 'Enter') {
+      // Prevent the default action of the Enter key
+      e.preventDefault()
+      // Get the value in the textarea
+      const value = textarea.value.trim() // Trim the value to remove any leading/trailing whitespace
+      // Create a p tag
+      if (value !== '') { // Only create and append the p tag if the value is not empty
+        const p = document.createElement('p')
+        // Put the value in the textarea into the p tag
+        p.innerHTML = value
+        // Put the p tag into the list
+        list.appendChild(p)
+      }
+      // Clear the value in the textarea
+      textarea.value = ''
+      }
+    })
+  </script>
+</body>
+</html>
