@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elevator Navigation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Centering */
+    .wrapper {
+      width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* navA */
+    nav {
+      height: 70px;
+      display: flex;
+      background-color: #bdaeae;
+    }
+
+    .navA a {
+      flex: 1;
+      text-align: center;
+      line-height: 70px;
+      text-decoration: none;
+      color: #000;
+      font-size: 25px;
+    }
+
+    /* navB */
+    .navB {
+      position: fixed;
+      width: 70px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 3px;
+      top: 30%;
+      right: 50px;
+      background-color: #c4b7b744;
+      opacity: 0;
+    }
+
+    .navB a {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      color: #000;
+      font-size: 20px;
+    }
+
+    /* Effects */
+    .blue {
+      height: 100vh;
+      background-color: #77c6e6;
+    } 
+
+    .green {
+      height: 100vh;
+      background-color: #47e641;
+    }
+    
+    .pink {
+      height: 100vh;
+      background-color: #f38ad4;
+    }
+
+    .purple {
+      height: 100vh;
+      background-color: #a441e6;
+    }
+
+    .yellow {
+      height: 100vh;
+      background-color: #e6e441;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navA wrapper">
+    <a href="#sectionA" style="color:#77c6e6;">blue</a>
+    <a href="#sectionB">green</a>
+    <a href="#sectionC">pink</a>
+    <a href="#sectionD">purple</a>
+    <a href="#sectionE">yellow</a>
+  </nav>
+
+  <nav class="navB">
+    <a href="#sectionA">blue</a>
+    <a href="#sectionB">green</a>
+    <a href="#sectionC">pink</a>
+    <a href="#sectionD">purple</a>
+    <a href="#sectionE">yellow</a>
+  </nav>
+
+  <div id="sectionA" class="blue wrapper"></div>
+  <div id="sectionB" class="green wrapper"></div>
+  <div id="sectionC" class="pink wrapper"></div>
+  <div id="sectionD" class="purple wrapper"></div>
+  <div id="sectionE" class="yellow wrapper"></div>
+
+  <script>
+    // Get the offsetLeft of the element with id sectionA, then set the right value of navB
+    const navB = document.querySelector('.navB');
+    const sectionA = document.querySelector('#sectionA');
+
+    // Set the right value of navB to the offsetLeft of sectionA minus 30px
+    function updateNavBPosition() {
+      const offsetLeft = sectionA.offsetLeft;
+      navB.style.right = `${window.innerWidth - offsetLeft - sectionA.offsetWidth - 85}px`;
+    }
+
+    // Initial call
+    updateNavBPosition();
+
+    // Listen for window size changes and dynamically update the position of navB
+    window.addEventListener('resize', updateNavBPosition);
+
+    // Add scroll event listener, show navB when scrolling to sectionA
+    window.addEventListener('scroll', function() {
+      navB.style.opacity = document.documentElement.scrollTop > 70 ? 1 : 0;
+    })
+
+    // Change the color of the links in navB when scrolling to the specified position
+    window.addEventListener('scroll', function() {
+      const scrollTop = document.documentElement.scrollTop;
+      const sectionA = document.querySelector('#sectionA');
+      const sectionB = document.querySelector('#sectionB');
+      const sectionC = document.querySelector('#sectionC');
+      const sectionD = document.querySelector('#sectionD');
+      const sectionE = document.querySelector('#sectionE');
+
+      if(scrollTop >= sectionA.offsetTop && scrollTop < sectionB.offsetTop) {
+        navB.children[0].style.color = '#77c6e6';
+        navB.style.opacity = 1;
+      } else {
+        navB.children[0].style.color = '#000';
+      }
+
+      if(scrollTop >= sectionB.offsetTop && scrollTop < sectionC.offsetTop) {
+        navB.children[1].style.color = '#47e641';
+      } else {
+        navB.children[1].style.color = '#000';
+      }
+
+      if(scrollTop >= sectionC.offsetTop && scrollTop < sectionD.offsetTop) {
+        navB.children[2].style.color = '#f38ad4';
+      } else {
+        navB.children[2].style.color = '#000';
+      }
+
+      if(scrollTop >= sectionD.offsetTop && scrollTop < sectionE.offsetTop) {
+        navB.children[3].style.color = '#a441e6';
+      } else {
+        navB.children[3].style.color = '#000';
+      }
+
+      if(scrollTop >= sectionE.offsetTop) {
+        navB.children[4].style.color = '#e6e441';
+      } else {
+        navB.children[4].style.color = '#000';
+      }
+    })
+  </script>
+</body>
+</html>
