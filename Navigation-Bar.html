@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigation Bar</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Center the wrapper */
+    .wrapper {
+      width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Navigation bar */
+    nav {
+      width: 100%;
+      height: 80px;
+      background-color: rgb(235, 134, 97);
+      text-align: center;
+      line-height: 80px;
+      transition: all 0.5s;
+      position: fixed;
+    }
+
+    /* Content */
+    .box {
+      padding-top: 80px;
+      height: 2000px;
+      background-color: rgba(65, 36, 36, 0.5);
+    }
+
+    .box ul {
+      list-style: none;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .box li {
+      width: 500px;
+      height: 500px;
+      background-color: rgb(136, 109, 99);
+      margin: 30px 0;
+      text-align: center;
+      line-height: 500px;
+      font-size: 100px;
+    }
+
+    li a {
+      color: #ffffff6b;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation bar -->
+  <nav><h1 class="wrapper">nav</h1></nav>
+
+  <!-- Content -->
+   <div class="box wrapper">
+    <ul>
+      <li><a href="#"><p>A</p></a></li>
+      <li><a href="#"><p>B</p></a></li>
+      <li><a href="#"><p>C</p></a></li>
+      <li><a href="#"><p>D</p></a></li>
+      <li><a href="#"><p>E</p></a></li>
+    </ul>
+   </div>
+   <script>
+   // Define a variable to record the last scroll position
+    let lastScrollTop = 0
+    // Page scroll event
+    window.addEventListener('scroll', function(){
+      const nav = document.querySelector('nav')
+      const n = document.documentElement.scrollTop
+      // Scroll down to hide nav, scroll up to show nav
+      nav.style.top = n > lastScrollTop ? '-80px' : 0
+      lastScrollTop = n
+    })
+   </script>
+</body>
+</html>
