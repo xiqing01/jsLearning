@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Information Management</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .info {
+      text-align: center;
+      margin: 20px 0;
+      line-height: 30px;
+      font-size: 20px;
+    }
+
+    .info .name {
+      height: 30px;
+      width: 100px;
+    }
+
+    .info .age {
+      height: 30px;
+      width: 50px;
+    }
+
+    .info .gender {
+      height: 30px;
+      width: 50px;
+    }
+
+    .info .salary {
+      height: 30px;
+      width: 100px;
+    }
+
+    .info .city {
+      height: 30px;
+      width: 80px;
+    }
+    input, select {
+      margin: 0 20px 0 0;
+    }
+
+    button {
+      margin: 0 10px;
+      color: #ffffff;
+      width: 100px;
+      height: 30px;
+      background-color: rgb(42, 42, 126);
+      border-radius: 5px;
+    }
+
+    table {
+      width: 900px;
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+
+    table th {
+      background: #b5cfee;
+      height: 40px;
+      border: 1px solid #ecf59d;
+    }
+
+    tbody td {
+      text-align: center;
+      border: 1px solid #ecf59d;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Student Information Management</h1>
+  <form class="info" autocomplete="off">
+    Name:
+    <input type="text" name="name" class="name">
+    Age:
+    <input type="text" name="age" class="age">
+    Gender:
+    <select name="gender" class="gender">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    Salary:
+    <input type="text" name="salary" class="salary">
+    City of Employment:
+    <select name="city" class="city">
+      <option value="Beijing">Beijing</option>
+      <option value="Shanghai">Shanghai</option>
+      <option value="Guangzhou">Guangzhou</option>
+      <option value="Shenzhen">Shenzhen</option>
+    </select>
+    <button class="add">Add</button>
+  </form>
+  <h1>Employment List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Salary</th>
+        <th>City of Employment</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    // Get elements
+    const uname = document.querySelector('.name')
+    const age = document.querySelector('.age')
+    const gender = document.querySelector('.gender')
+    const salary = document.querySelector('.salary')
+    const city = document.querySelector('.city')
+    const tbody = document.querySelector('tbody')
+    const items = document.querySelectorAll('[name]')
+
+    // Declare an array to store student information
+    const arr = []
+
+    // 1. Add module
+    // 1.1 Form submit event
+    const info = document.querySelector('.info')
+    info.addEventListener('submit', function(e) {
+      // Prevent default event
+      e.preventDefault()
+
+      // Form validation. If not passed, interrupt directly, no need to add data
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].value === '') {
+          alert('Please fill in all information')
+          return
+        }
+      }
+
+      // Create a new object
+      const obj = {
+        stuId: arr.length + 1,
+        uname: uname.value,
+        age: age.value,
+        gender: gender.value,
+        salary: salary.value,
+        city: city.value
+      }  
+      // Add the new object to the array
+      arr.push(obj)
+      // Clear the form and reset
+      this.reset()
+      // Call render method to render module
+      render()
+    })
+
+    // 2. Render module
+    function render() {
+      // Clear tbody
+      tbody.innerHTML = ''
+      // Traverse the arr array
+      for (let i = 0; i < arr.length; i++) {
+        // Generate tr
+        const tr = document.createElement('tr') 
+        tr.innerHTML = `
+          <td>${arr[i].stuId}</td>
+          <td>${arr[i].uname}</td>
+          <td>${arr[i].age}</td>
+          <td>${arr[i].gender}</td>
+          <td>${arr[i].salary}</td>
+          <td>${arr[i].city}</td>
+          <td>
+            <a href="#" data-id=${i}>Delete</a>
+          </td>
+          `
+        // Add tr to tbody
+        tbody.appendChild(tr)
+      }
+    }
+
+    // 3. Delete module
+    tbody.addEventListener('click', function(e) {
+      // Check if the clicked element is an a tag
+      if (e.target.tagName === 'A') {
+        // Get the data-id attribute value of the clicked a tag
+        // Delete the corresponding element in the array
+        arr.splice(e.target.dataset.id, 1)
+        // Re-render
+        render()
+      }
+    })
+  </script>
+</body>
+</html>
