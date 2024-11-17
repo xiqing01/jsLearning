@@ -76,6 +76,10 @@
     .btn:hover {
       background-color: #0056b3;
     }
+
+    span {
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -85,23 +89,30 @@
       <div class="form-group">
         <label for="username">Username</label>
         <input type="text" id="username" name="username" required>
+        <span class="msg"></span>
       </div>
       <div class="form-group">
         <label for="phone">Phone Number</label>
         <input type="tel" id="phone" name="phone" required>
+        <span class="msg"></span>
       </div>
       <div class="form-group">
         <label for="sms-code">SMS Verification Code</label>
         <input type="text" id="sms-code" name="sms-code" required>
-        <a href="#" class="code">发送验证码</a>
+        <a href="#" class="code">Send Verification Code</a>
+        <span class="msg"></span>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required>
+        <span class="msg"></span>
+
       </div>
       <div class="form-group">
         <label for="confirm-password">Confirm Password</label>
         <input type="password" id="confirm-password" name="confirm-password" required>
+        <span class="msg"></span>
+
       </div>
       <div class="form-group agreement">
         <input type="checkbox" id="agreement" name="agreement" required>
@@ -111,7 +122,117 @@
     </form>
   </div>
   <script>
+    // 1. SMS Verification Code Module
+    const code = document.querySelector('.code')
+    let flag = true
+    // 1.1. Click to send verification code
+    code.addEventListener('click', function() {
+      if (flag) {
+        flag = false
+        let time = 60
+        code.innerHTML = `${time} seconds to resend`
+        let timer = setInterval(() => {
+          time--
+          code.innerHTML = `${time} seconds to resend`
+          if (time === 0) {
+            clearInterval(timer)
+            code.innerHTML = 'Send Verification Code'
+            flag = true
+          }
+        }, 1000)
+      }
+    })
     
+    // Username validation
+    const username = document.querySelector('#username')
+    username.addEventListener('change', verifyName)
+
+    function verifyName() {
+      const reg = /^[a-zA-Z0-9_-]{6,10}$/
+      const msg = username.parentNode.querySelector('.msg')
+      if(!reg.test(username.value)) {
+        msg.innerHTML = 'Invalid username format, please enter 6-10 characters'
+        return false
+      }
+      msg.innerHTML = ''
+      return true
+    }
+
+    // Phone number validation
+    const phone = document.querySelector('#phone')
+    phone.addEventListener('change', verifyPhone)
+    function verifyPhone() {
+      const reg = /^1[3-9]\d{9}$/
+      console.log(reg.test(phone.value));
+      const msg = phone.parentNode.querySelector('.msg')
+      if(!reg.test(phone.value)) {
+        msg.innerHTML = 'Invalid phone number format, please enter an 11-digit phone number'
+        return false
+      }
+      msg.innerHTML = ''
+      return true
+    }
+  
+    // SMS code validation
+    const smscode= document.querySelector('#sms-code')
+    smscode.addEventListener('change', verifysmsCode)
+    function verifysmsCode() {
+      const reg = /^\d{6}$/
+      console.log(reg.test(smscode.value));
+      const msg = smscode.parentNode.querySelector('.msg')
+      if(!reg.test(smscode.value)) {
+        msg.innerHTML = 'Invalid input, 6-digit number'
+        return false
+      }
+      msg.innerHTML = ''
+      return true
+    }
+  
+    // Password validation
+    const Password = document.querySelector('#password')
+    Password.addEventListener('change', verifyPassword)
+    function verifyPassword() {
+      const reg = /^[a-zA_Z0-9-_]{6,20}/
+      console.log(reg.test(Password.value));
+      const msg = Password.parentNode.querySelector('.msg')
+      if(!reg.test(Password.value)) {
+        msg.innerHTML = 'Invalid input, 6-20 characters consisting of letters, numbers, and symbols'
+        return false
+      }
+      msg.innerHTML = ''
+      return true
+    }
+
+    // Confirm password validation
+    const confirmPassword = document.querySelector('#confirm-password')
+    confirmPassword.addEventListener('change', verifycPassword)
+    function verifycPassword() {
+      const msg = confirmPassword.parentNode.querySelector('.msg')
+      if(confirmPassword.value !== Password.value) {
+        msg.innerHTML = 'The two passwords entered are inconsistent'
+        return false
+      }
+      msg.innerHTML = ''
+      return true
+    }
+  
+    // Form submission
+    const form = document.querySelector('form')
+    form.addEventListener('submit', function(e) {
+      // Check whether the agreement is checked
+      if(!document.querySelector('#agreement').checked) {
+        alert('Please agree to the User Agreement')
+        e.preventDefault()
+        return
+      }
+      e.preventDefault()
+      if(verifyName() && verifyPhone() && verifysmsCode() && verifyPassword() && verifycPassword()) {
+        alert('Registration successful')
+      }
+    })
+  </script>
+</body>
+</html>
   </script>
 </body>
 </html>
